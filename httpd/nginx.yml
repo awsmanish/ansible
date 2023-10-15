@@ -1,0 +1,43 @@
+---
+- name: Install Nginx 1 on Amazon Linux 2
+  hosts: all
+  become: yes  
+
+  tasks:
+    - name: amazon-linux-extras for nginx
+      shell: "amazon-linux-extras enable nginx1.12"
+      become: yes
+
+    - name: install nginx
+      package: 
+        name: nginx
+        state: latest
+            
+    - name: Start Nginx service
+      service:
+        name: nginx
+        state: restarted
+        enabled: yes
+
+
+- name: template add on instance 1
+  hosts: instance-1
+  become: yes
+
+
+  tasks: 
+  - name: index.html file replate
+    copy:
+      src: /home/ec2-user/httpd/Smoke-Effect-on-Your-Name-CSS-Animation/*
+      dest: /usr/share/nginx/html/index.html
+        
+
+  - name: Start Nginx service
+    service:
+      name: nginx
+      state: restarted
+      enabled: yes
+  
+  
+
+    

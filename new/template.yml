@@ -1,0 +1,20 @@
+- name: host a webserver
+  hosts: all
+  become: true
+  tasks: 
+  - name: install/ update httpd package
+    package: 
+      name: httpd
+      state: present
+  - name: copy template folder in html dir
+    copy:
+      src: /home/ec2-user/temp/sbs-html/*
+      dest: /var/www/html/    
+  - name: create or copy template in index.html
+    copy:
+      src: /home/ec2-user/temp/sbs-html/index.html
+      dest: /var/www/html/index.html
+  - name: start the httpd service
+    service: 
+      name: httpd
+      state: restarted    
